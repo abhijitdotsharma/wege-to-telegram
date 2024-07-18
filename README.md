@@ -2,31 +2,35 @@
 
 This is built to solve my own problem.
 
-I don't want to log in to we-gesuct.de everyday and browse for apartments every time so I do what engineers do best and spend 30-40 hours to build an automation that saves me 30mins / day.
+I don't want to log in to [ we-gesuct.de](https://www.wg-gesucht.de/) everyday and browse for apartments every time so I do what engineers do best and spend 30-40 hours to build an automation that saves me 30mins / day.
 
 # How it works
 - Goes to wg-gesuct.de
 - Gets the list of listings from the first page ( listings from next pages already have 20-30 messages so it doesn't benefit me or you)
-- Sends the listings to my personal telegram group which I can view instantly and think of what to do. 
+- Sends the listings to my personal telegram group which I can view instantly and think of what to do.
 > Why Telegram ? I generally open it the most out of my mobile apps and I feel if I have the information there I will be faster to act on it 
+![image](https://github.com/user-attachments/assets/c976bdab-fe8d-4111-b1f4-96db20788382)
+
+
 
 # Tech used
 - Pupeeteer 
-- Telegram bot api
-- node fetch
+- Telegram API ( Bot )
+- `node-fetch` ( for http calls to telegram )
 
 # How to use
-- Clone the repo
-- Create a telegram bot and get the token
+- Clone the repo `git clone https://github.com/abhijitdotsharma/wege-to-telegram.git`
+- Create a telegram bot and get the token `https://core.telegram.org/bots/tutorial`
 - Create a telegram group and add the bot to the group
 - Get the group id by sending a message to the group and then going to `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates` and getting the chat id
 - Create a `.env` file and add the following
 ```
 TELEGRAM_BOT_TOKEN=<YOUR TELEGRAM BOT TOKEN>
-TELEGRAM_GROUP_ID=<YOUR TELEGRAM GROUP ID>
+TELEGRAM_GROUP_CHAT_ID=<YOUR TELEGRAM GROUP ID>
+WEGE_URL = 
 ```
-- Run `npm install`
-- Run `npm start`
+- Run `npm install` to install required dependencies
+- Run `node main.js` to run the scapper
 
 
 
