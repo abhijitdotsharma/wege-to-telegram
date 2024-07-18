@@ -32,6 +32,7 @@ WEGE_URL =
 - Run `npm install` to install required dependencies
 - Run `node main.js` to run the scapper
 
+> Also create two directories namely `data` and `img` (in the root of the project) if you get error while running it locally, I have a `todo` but I want to solve bigger issues first and might forget it
 
 
 # Learnings
