@@ -1,3 +1,11 @@
 /node_modules
 
 package-lock.json
+
+/img
+/data
+
+enhancements.md
+
+
+.env
