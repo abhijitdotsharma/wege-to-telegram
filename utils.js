@@ -80,3 +80,14 @@ export const getListOfListingsFromPage = async(currentPage) => {
   });
   return listingsWithURL
 }
+
+export const getFormattedListingData = (listings) => {
+  let formattedMessage = "Here are the latest listings:\n\n";
+  listings.forEach(listing => {
+    const { url, rent, availableFrom, size } = listing;
+    const baseUrl = "https://www.wg-gesucht.de"; 
+    formattedMessage += `[${size} for €${rent}, available from ${availableFrom}](${baseUrl}${url})\n\n`;
+  });
+  return formattedMessage;
+
+}

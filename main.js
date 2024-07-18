@@ -77,7 +77,7 @@ async function main() {
   await browser.close();
 
   // send a message through telegram bot
-  sendMessageToTelegram("Hello from puppeteer, listings found: " + listings.length);
+  sendMessageToTelegram(listings);
 }
 
 main();
