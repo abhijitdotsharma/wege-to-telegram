@@ -7,7 +7,8 @@ I don't want to log in to we-gesuct.de everyday and browse for apartments every 
 # How it works
 - Goes to wg-gesuct.de
 - Gets the list of listings from the first page ( listings from next pages already have 20-30 messages so it doesn't benefit me or you)
-- Sends the listings to your telegram group which you can click instantly and send message from wg
+- Sends the listings to my personal telegram group which I can view instantly and think of what to do. 
+> Why Telegram ? I generally open it the most out of my mobile apps and I feel if I have the information there I will be faster to act on it 
 
 # Tech used
 - Pupeeteer 
