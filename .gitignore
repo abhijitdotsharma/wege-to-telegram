@@ -9,3 +9,8 @@ enhancements.md
 
 
 .env
+
+# firebase functions
+/functions/node_modules
+/functions/.gitignore
+/functions/package-lock.json
