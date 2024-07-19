@@ -10,8 +10,6 @@ export const acceptCookiesOnLoad = async (page, selector) => {
   await page.click('.cmpboxinner .cmpboxbtns #cmpwelcomebtnyes .cmpboxbtn');
   const timestamp = Date.now();
   const date = new Date(timestamp);
-  // take a screenshot
-  await page.screenshot({ path: `./img/pupss-${convertDateToTimestamp(date)}.png` });
   console.log("clicked on accept cookies")
 }
 

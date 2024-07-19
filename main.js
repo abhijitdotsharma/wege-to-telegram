@@ -21,6 +21,8 @@ async function main(res) {
   const timestamp = Date.now();
   const date = new Date(timestamp);
 
+  const isProductionENV = process.env.NODE_ENV === 'production';
+
   // Launch the browser and open a new blank page
   const browser = await puppeteer.launch({
     args: [
@@ -30,7 +32,7 @@ async function main(res) {
       '--no-zygote',
     ],
     executablePath: 
-      process.env.NODE_ENV === 'production' 
+    isProductionENV 
         ? process.env.PUPPETEER_EXECUTABLE_PATH
         : puppeteer.executablePath(),
   });
@@ -63,7 +65,10 @@ async function main(res) {
   await page.waitForNavigation();
 
   // new page
-  await page.screenshot({ path: `./img/pupss-${CITY_NAME}Listing${convertDateToTimestamp(date)}.png` });
+  if(!isProductionENV){
+    await page.screenshot({ path: `./img/pupss-${CITY_NAME}Listing${convertDateToTimestamp(date)}.png` });
+  }
+  
 
   await page.waitForSelector('#offer_filter_form');
 
@@ -79,13 +84,15 @@ async function main(res) {
   await page.click(".filter_submit_button");
   await page.waitForNavigation();
 
-  await page.screenshot({ path: `./img/pupss-${CITY_NAME}WGAfterMaxRent${convertDateToTimestamp(date)}.png` });
-
+  if(!isProductionENV){
+    await page.screenshot({ path: `./img/pupss-${CITY_NAME}WGAfterMaxRent${convertDateToTimestamp(date)}.png` });
+  }
+  
   await page.waitForSelector(".wgg_card.offer_list_item");// wait till the listings appear to be sure the page is loaded
   const listings = await getListOfListingsFromPage(page);
 
   // todo if folder doesnt exist, create it
-  fs.writeFileSync(`./data/listings-${convertDateToTimestamp(date)}.json`, JSON.stringify(listings, null, 2));
+  // fs.writeFileSync(`./data/listings-${convertDateToTimestamp(date)}.json`, JSON.stringify(listings, null, 2));
 
   res.send("listings" + JSON.stringify(listings, null, 2));
 
