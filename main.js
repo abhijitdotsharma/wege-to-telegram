@@ -17,13 +17,24 @@ import {
 } from './config.js';
 
 
-async function main() {
-
+async function main(res) { 
   const timestamp = Date.now();
   const date = new Date(timestamp);
 
   // Launch the browser and open a new blank page
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox', 
+      '--disable-setuid-sandbox',
+      '--single-process',
+      '--no-zygote',
+    ],
+    executablePath: 
+      process.env.NODE_ENV === 'production' 
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+  });
+
   const page = await browser.newPage();
   page.setDefaultNavigationTimeout(6000000);
 
@@ -76,11 +87,13 @@ async function main() {
   // todo if folder doesnt exist, create it
   fs.writeFileSync(`./data/listings-${convertDateToTimestamp(date)}.json`, JSON.stringify(listings, null, 2));
 
+  res.send("listings" + JSON.stringify(listings, null, 2));
 
   await browser.close();
 
   // send a message through telegram bot
-  sendMessageToTelegram(listings);
+  // sendMessageToTelegram(listings);
+  
 }
 
-main();
+export default main;
