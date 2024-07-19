@@ -35,6 +35,11 @@ WEGE_URL =
 > Also create two directories namely `data` and `img` (in the root of the project) if you get error while running it locally, I have a `todo` but I want to solve bigger issues first and might forget it
 
 
+# Branches
+- `main` : The main branch which has the working code
+- `dev` : The development branch where I will be adding new features and testing them before merging to main
+- Other branches are feature branches which I will be creating and **merging to dev** `before merging to main`
+
 # Learnings
 While I wanted to solve my own problem I learned a lot of things in the process 
 
