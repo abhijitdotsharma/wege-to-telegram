@@ -12,6 +12,9 @@ import {
 import { 
   sendMessageToTelegram 
 } from './telegram.js';
+import {
+  CITY_NAME
+} from './config.js';
 
 
 async function main() {
@@ -42,14 +45,14 @@ async function main() {
   await page.waitForSelector(cityInputBoxSelector);
 
   // todo move the city to come from a config file or env file
-  await page.type(cityInputBoxSelector, 'Hamburg', { delay: 120 });
+  await page.type(cityInputBoxSelector, CITY_NAME, { delay: 120 });
   const buttonSelector = '#search_button';
   await page.waitForSelector(buttonSelector);
   await page.click(buttonSelector);
   await page.waitForNavigation();
 
   // new page
-  await page.screenshot({ path: `./img/pupss-HamburgLsiting${convertDateToTimestamp(date)}.png` });
+  await page.screenshot({ path: `./img/pupss-${CITY_NAME}Listing${convertDateToTimestamp(date)}.png` });
 
   await page.waitForSelector('#offer_filter_form');
 
@@ -65,7 +68,7 @@ async function main() {
   await page.click(".filter_submit_button");
   await page.waitForNavigation();
 
-  await page.screenshot({ path: `./img/pupss-HamburgWGAfterMaxRent${convertDateToTimestamp(date)}.png` });
+  await page.screenshot({ path: `./img/pupss-${CITY_NAME}WGAfterMaxRent${convertDateToTimestamp(date)}.png` });
 
   await page.waitForSelector(".wgg_card.offer_list_item");// wait till the listings appear to be sure the page is loaded
   const listings = await getListOfListingsFromPage(page);
