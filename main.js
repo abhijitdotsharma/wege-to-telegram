@@ -22,7 +22,19 @@ async function main(res) {
   const date = new Date(timestamp);
 
   // Launch the browser and open a new blank page
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox', 
+      '--disable-setuid-sandbox',
+      '--single-process',
+      '--no-zygote',
+    ],
+    executablePath: 
+      process.env.NODE_ENV === 'production' 
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
+  });
+
   const page = await browser.newPage();
   page.setDefaultNavigationTimeout(6000000);
 
