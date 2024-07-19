@@ -17,8 +17,7 @@ import {
 } from './config.js';
 
 
-async function main() {
-
+async function main(res) { 
   const timestamp = Date.now();
   const date = new Date(timestamp);
 
@@ -76,11 +75,13 @@ async function main() {
   // todo if folder doesnt exist, create it
   fs.writeFileSync(`./data/listings-${convertDateToTimestamp(date)}.json`, JSON.stringify(listings, null, 2));
 
+  res.send("listings" + JSON.stringify(listings, null, 2));
 
   await browser.close();
 
   // send a message through telegram bot
-  sendMessageToTelegram(listings);
+  // sendMessageToTelegram(listings);
+  
 }
 
-main();
+export default main;
