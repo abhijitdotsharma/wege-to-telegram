@@ -1,7 +1,7 @@
 // package imports
 import puppeteer from 'puppeteer';
 import 'dotenv/config';
-import fs from 'fs';
+
 
 // project imports
 import { 
@@ -16,10 +16,55 @@ import {
   CITY_NAME
 } from './config.js';
 
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import path from 'path';
+
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Function to check for an existing file that starts with "listings-"
+export function findExistingFile() {
+  const directoryPath = __dirname; // Directory where files are stored
+  const files = fs.readdirSync(directoryPath);
+  console.log("files: ", files);
+  const listingsFile = files.find(file => file.startsWith('listings'));
+  return listingsFile ? path.join(directoryPath, listingsFile) : null;
+}
+
+// Function to handle the file logic
+function handleFile(scrapedListings) {
+  const existingFilePath = findExistingFile();
+
+  if (existingFilePath) {
+    // File exists, read its content
+    console.log('File exists, reading its content...');
+    fs.readFile(existingFilePath, 'utf8', (err, data) => {
+      if (err) throw err;
+      console.log('file exists, File content:', data);
+    });
+
+  } else {
+    // File does not exist, create it with a new timestamp
+    console.log('File does not exist, creating it...');
+    const filename = `listings-${new Date().toISOString()}.json`;
+    const filepath = path.join(__dirname, filename);
+    fs.writeFile(filepath, JSON.stringify(scrapedListings), (err) => {
+      if (err) throw err;
+      console.log('File created successfully.');
+    });
+  }
+}
+
+
+
+
 
 async function main(res) { 
   const timestamp = Date.now();
   const date = new Date(timestamp);
+
+  console.log("running main()", date);
 
   const isProductionENV = process.env.NODE_ENV === 'production';
 
@@ -31,12 +76,20 @@ async function main(res) {
       '--single-process',
       '--no-zygote',
     ],
+    headless: true,
     executablePath: 
     isProductionENV 
         ? process.env.PUPPETEER_EXECUTABLE_PATH
         : puppeteer.executablePath(),
   });
 
+  let listings = [];
+
+
+
+  try {
+
+ 
   const page = await browser.newPage();
   page.setDefaultNavigationTimeout(6000000);
 
@@ -69,6 +122,7 @@ async function main(res) {
     await page.screenshot({ path: `./img/pupss-${CITY_NAME}Listing${convertDateToTimestamp(date)}.png` });
   }
   
+  await page.waitForSelector('#filterBox');// wait till the listings appear to be sure the page is loaded
 
   await page.waitForSelector('#offer_filter_form');
 
@@ -89,18 +143,25 @@ async function main(res) {
   }
   
   await page.waitForSelector(".wgg_card.offer_list_item");// wait till the listings appear to be sure the page is loaded
-  const listings = await getListOfListingsFromPage(page);
+  listings = await getListOfListingsFromPage(page);
 
-  // todo if folder doesnt exist, create it
-  // fs.writeFileSync(`./data/listings-${convertDateToTimestamp(date)}.json`, JSON.stringify(listings, null, 2));
+  // if file exists, overwrite it
+  // if file doesnt exist, create it
+  handleFile(listings);
 
-  res.send("listings" + JSON.stringify(listings, null, 2));
 
-  await browser.close();
+  
+  } catch (error) {    
+    console.log("error", error);
+    // sendMessageToTelegram("error in scraping", error);
+  } finally {
+    await browser.close();
+  }
 
-  // send a message through telegram bot
-  // sendMessageToTelegram(listings);
+  // sendMessageToTelegram("listings");
   
 }
+
+
 
 export default main;
