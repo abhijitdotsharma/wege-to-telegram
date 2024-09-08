@@ -36,7 +36,7 @@ app.get('/get-listings', async (req, res) => {
 
     console.log("FILENAME: ", FILENAME);
     if(FILENAME === null){
-        res.send("No file found which means its still not scraped");
+      return res.status(404).json({ error: "No file found which means it's still not scraped" });
     }
 
     if(FILENAME) {
