@@ -99,6 +99,7 @@ async function main(res) {
   const cookiesAppear = await page.waitForSelector('#cmpbox');
   if (cookiesAppear) {
     await acceptCookiesOnLoad(page, "#cmpbox");
+    console.log("accepted cookies");
   }
 
   // wait for the selector to appear
@@ -106,7 +107,7 @@ async function main(res) {
   // click the search button
   // screenshot the page
   await page.waitForSelector('#homepage_quicksearch_form');
-
+  console.log("loaded homepage_quicksearch_form");
   const cityInputBoxSelector = "#formPortal .col-sm-12 .form-group .position-relative #autocompinp";
   await page.waitForSelector(cityInputBoxSelector);
 
@@ -116,6 +117,7 @@ async function main(res) {
   await page.waitForSelector(buttonSelector);
   await page.click(buttonSelector);
   await page.waitForNavigation();
+  console.log("navigated to the search page");
 
   // new page
   if(!isProductionENV){
@@ -135,6 +137,8 @@ async function main(res) {
   await page.waitForSelector(APARTMENT_CATEGORY_SELECTOR);
   await page.select(APARTMENT_CATEGORY_SELECTOR, "0", "1");
 
+  await page.waitForSelector(".filter_submit_button");
+  console.log("loaded filter_submit_button");
   await page.click(".filter_submit_button");
   await page.waitForNavigation();
 
@@ -155,7 +159,10 @@ async function main(res) {
     console.log("error", error);
     // sendMessageToTelegram("error in scraping", error);
   } finally {
-    await browser.close();
+    await browser.close();   
+    const timestamp = Date.now();
+    const date = new Date(timestamp);
+    console.log("browser closed at - ", date);
   }
 
   // sendMessageToTelegram("listings");
