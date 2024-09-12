@@ -16,7 +16,9 @@ async function sendMessageToTelegram(listings) {
   const chatID = process.env.TELEGRAM_GROUP_CHAT_ID;
   const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-  const listingData = getFormattedListingData(listings);
+  // const listingData = getFormattedListingData(listings);
+
+  console.log('telegram.js - sendMessageToTelegram - listings:', listings);
 
   try {
     const response = await fetch(url, {
@@ -24,7 +26,10 @@ async function sendMessageToTelegram(listings) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatID,
-        text: listingData,
+        // text: "demo listing message again",
+        text: (listings && listings.length !== 0) 
+          ? listings 
+          : 'No new listings found',
       }),
     });
 

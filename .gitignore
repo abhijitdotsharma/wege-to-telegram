@@ -1,6 +1,5 @@
 /node_modules
 
-package-lock.json
 
 /img
 /data
@@ -13,4 +12,3 @@ enhancements.md
 # firebase functions
 /functions/node_modules
 /functions/.gitignore
-/functions/package-lock.json

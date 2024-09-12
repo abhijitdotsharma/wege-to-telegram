@@ -1,1 +1,1 @@
-export const CITY_NAME = 'Hamburg';
+export const CITY_NAME = 'Marburg';
