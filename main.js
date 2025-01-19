@@ -37,11 +37,11 @@ function handleFile(scrapedListings) {
   const existingFilePath = findExistingFile();
 
   if (existingFilePath) {
-    // File exists, read its content
-    console.log('File exists, reading its content...');
-    fs.readFile(existingFilePath, 'utf8', (err, data) => {
+    // File exists, overwrite its content
+    console.log('File exists, overwriting its content...');
+    fs.writeFile(existingFilePath, JSON.stringify(scrapedListings), (err) => {
       if (err) throw err;
-      console.log('file exists, File content:', data);
+      console.log('File overwritten successfully.');
     });
 
   } else {
@@ -55,7 +55,7 @@ function handleFile(scrapedListings) {
     });
   }
 }
-
+ 
 
 
 
@@ -124,7 +124,7 @@ async function main(res) {
     await page.screenshot({ path: `./img/pupss-${CITY_NAME}Listing${convertDateToTimestamp(date)}.png` });
   }
   
-  await page.waitForSelector('#filterBox');// wait till the listings appear to be sure the page is loaded
+  await page.waitForSelector('#filterBox', {timeout: 60000});// wait till the listings appear to be sure the page is loaded
 
   await page.waitForSelector('#offer_filter_form');
 

@@ -23,7 +23,7 @@ export function findExistingFile() {
 
 const app = express();
 
-const FILENAME = findExistingFile();
+
 
 const PORT = process.env.PORT || 4000;
 
@@ -34,14 +34,20 @@ app.get('/', (req, res) => {
 app.get('/get-listings', async (req, res) => {
     // send listings that are saved in the file to the client
 
+    const FILENAME = findExistingFile();
+
     console.log("FILENAME: ", FILENAME);
     if(FILENAME === null){
-      return res.status(404).json({ error: "No file found which means it's still not scraped" });
+      return res.status(404).send({
+        message: "No file found which means it's still being scrapped"
+     });
     }
 
     if(FILENAME) {
         const data = fs.readFileSync(FILENAME, 'utf8');
-        res.send(data);
+        res.status(200).send({
+          message: data
+        });
     }
 });
 
